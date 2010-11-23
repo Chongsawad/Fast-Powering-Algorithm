@@ -5,23 +5,36 @@ class RingTable < Array
   end
 end
 
-m = ARGV[0].to_i
+class RingOfModulo
+  attr_accessor :add, :mul
+  def initialize(m)
+    m = m != nil ? m.to_i : 6
 
-a = RingTable.new(m)
-b = RingTable.new(m)
+    @add = RingTable.new(m)
+    @mul = RingTable.new(m)
 
-m.times do |x|
-  a[x] = Array.new(m,0)
-  b[x] = Array.new(m,0)
-end
+    m.times do |x|
+      @add[x] = Array.new(m,0)
+      @mul[x] = Array.new(m,0)
+    end
 
-m.times do |i|
-  m.times do |j|
-    a[i][j] = i*j%m
-    b[i][j] = (i+j)%m
+    m.times do |i|
+      m.times do |j|
+        @add[i][j] = i*j%m
+        @mul[i][j] = (i+j)%m
+      end
+    end
   end
 end
-puts "Addition tables modulo #{m}"
-a.collect { |a| print('[' + a*','+']'+"\n") }
-puts "Multiplication tables modulo #{m}"
-b.collect { |b| print('[' + b*','+']'+"\n") }
+
+h = ARGV[0]
+if h == "-o" || h == "-O" || h == "--output"
+  m = ARGV[1]
+  myRing = RingOfModulo.new(m)
+
+  puts "Addition tables modulo #{m}"
+  myRing.add.collect { |a| print('[' + a*','+']'+"\n") }
+
+  puts "Multiplication tables modulo #{m}"
+  myRing.mul.collect { |b| print('[' + b*','+']'+"\n") }
+end
