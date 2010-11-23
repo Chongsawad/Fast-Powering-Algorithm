@@ -38,6 +38,5 @@ class FastPowering
 end
 
 job = FastPowering.new(ARGV)
-
 job.calculate
 
